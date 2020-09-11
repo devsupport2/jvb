@@ -21,13 +21,22 @@ RUN \
 
 RUN \
 	cd ~/worksapce && \
+	echo '============== git clone and build ==============' && \
 	git clone https://github.com/devsupport2/jvb.git && \
 	cd jvb && \
-	./resources/build.sh
+	./resources/build.sh 
+
+RUN \
+	apt-dpkg-wrap apt-get update && \
+	apt-dpkg-wrap apt-get install -y libxml2-utils && \
+	cd ~/worksapce/jvb/
 
 RUN \
 	cd ~/worksapce/jvb/ && \
-	dpkg-buildpackage -A -rfakeroot -us -uc
+ 	cat /etc/os-release && \
+ 	apt-dpkg-wrap apt-get update && \
+ 	apt-dpkg-wrap apt-get install -y dpkg-dev build-essential fakeroot debhelper dh-systemd maven && \	
+ 	dpkg-buildpackage -A -rfakeroot -us -uc
 
 RUN \
 	apt-dpkg-wrap apt-get update && \
